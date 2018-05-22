@@ -37,5 +37,5 @@ func hypot(p, q float32) float32 {
 		return 0
 	}
 	q = q / p
-	return p * Sqrt(1+q*q)
+	return p * MobileSqrt(1+q*q)
 }

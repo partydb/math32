@@ -2,4 +2,4 @@
 
 package math32
 
-func Log(x float32) float32
+func MobileLog(x float32) float32

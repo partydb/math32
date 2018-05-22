@@ -40,9 +40,9 @@ func Pow(x, y float32) float32 {
 	case y == 1:
 		return x
 	case y == 0.5:
-		return Sqrt(x)
+		return MobileSqrt(x)
 	case y == -0.5:
-		return 1 / Sqrt(x)
+		return 1 / MobileSqrt(x)
 	case IsNaN(x) || IsNaN(y):
 		return NaN()
 	case x == 0:
@@ -90,7 +90,7 @@ func Pow(x, y float32) float32 {
 		return NaN()
 	}
 	if yi >= 1<<31 {
-		return Exp(y * Log(x))
+		return MobileExp(y * MobileLog(x))
 	}
 
 	// ans = a1 * 2**ae (= 1 for now).
@@ -103,7 +103,7 @@ func Pow(x, y float32) float32 {
 			yf--
 			yi++
 		}
-		a1 = Exp(yf * Log(x))
+		a1 = MobileExp(yf * MobileLog(x))
 	}
 
 	// ans *= x**yi

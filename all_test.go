@@ -1933,7 +1933,7 @@ func TestErfc(t *testing.T) {
 }
 
 func TestExp(t *testing.T) {
-	testExp(t, Exp, "Exp")
+	testExp(t, MobileExp, "Exp")
 	// testExp(t, ExpGo, "ExpGo")
 }
 
@@ -2121,7 +2121,7 @@ func TestGamma(t *testing.T) {
 
 func TestHypot(t *testing.T) {
 	for i := 0; i < len(vf); i++ {
-		a := Abs(1e20 * tanh[i] * Sqrt(2))
+		a := Abs(1e20 * tanh[i] * MobileSqrt(2))
 		if f := Hypot(1e20*tanh[i], 1e20*tanh[i]); !veryclose(a, f) {
 			t.Errorf("Hypot(%g, %g) = %g, want %g", 1e20*tanh[i], 1e20*tanh[i], f, a)
 		}
@@ -2135,7 +2135,7 @@ func TestHypot(t *testing.T) {
 
 func TestHypotGo(t *testing.T) {
 	for i := 0; i < len(vf); i++ {
-		a := Abs(1e20 * tanh[i] * Sqrt(2))
+		a := Abs(1e20 * tanh[i] * MobileSqrt(2))
 		if f := HypotGo(1e20*tanh[i], 1e20*tanh[i]); !veryclose(a, f) {
 			t.Errorf("HypotGo(%g, %g) = %g, want %g", 1e20*tanh[i], 1e20*tanh[i], f, a)
 		}
@@ -2255,15 +2255,15 @@ func TestLgamma(t *testing.T) {
 func TestLog(t *testing.T) {
 	for i := 0; i < len(vf); i++ {
 		a := Abs(vf[i])
-		if f := Log(a); !close(log[i], f) {
+		if f := MobileLog(a); !close(log[i], f) {
 			t.Errorf("Log(%g) = %g, want %g", a, f, log[i])
 		}
 	}
-	if f := Log(10); f != Ln10 {
+	if f := MobileLog(10); f != Ln10 {
 		t.Errorf("Log(%g) = %g, want %g", 10.0, f, Ln10)
 	}
 	for i := 0; i < len(vflogSC); i++ {
-		if f := Log(vflogSC[i]); !alike(logSC[i], f) {
+		if f := MobileLog(vflogSC[i]); !alike(logSC[i], f) {
 			t.Errorf("Log(%g) = %g, want %g", vflogSC[i], f, logSC[i])
 		}
 	}
@@ -2396,12 +2396,12 @@ func TestPow10(t *testing.T) {
 
 func TestRemainder(t *testing.T) {
 	for i := 0; i < len(vf); i++ {
-		if f := Remainder(10, vf[i]); !close(remainder[i], f) {
+		if f := MobileRemainder(10, vf[i]); !close(remainder[i], f) {
 			t.Errorf("Remainder(10, %g) = %g, want %g", vf[i], f, remainder[i])
 		}
 	}
 	for i := 0; i < len(vffmodSC); i++ {
-		if f := Remainder(vffmodSC[i][0], vffmodSC[i][1]); !alike(fmodSC[i], f) {
+		if f := MobileRemainder(vffmodSC[i][0], vffmodSC[i][1]); !alike(fmodSC[i], f) {
 			t.Errorf("Remainder(%g, %g) = %g, want %g", vffmodSC[i][0], vffmodSC[i][1], f, fmodSC[i])
 		}
 	}
@@ -2722,7 +2722,7 @@ func BenchmarkErfc(b *testing.B) {
 
 func BenchmarkExp(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		Exp(.5)
+		MobileExp(.5)
 	}
 }
 
@@ -2848,7 +2848,7 @@ func BenchmarkLgamma(b *testing.B) {
 
 func BenchmarkLog(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		Log(.5)
+		MobileLog(.5)
 	}
 }
 
@@ -2914,7 +2914,7 @@ func BenchmarkPow10Neg(b *testing.B) {
 
 func BenchmarkRemainder(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		Remainder(10, 3)
+		MobileRemainder(10, 3)
 	}
 }
 
@@ -2948,7 +2948,7 @@ func BenchmarkSqrt(b *testing.B) {
 	var x, y float32
 	x, y = 0.0, 10.0
 	for i := 0; i < b.N; i++ {
-		x += Sqrt(y)
+		x += MobileSqrt(y)
 	}
 	Global = x
 }
@@ -2956,7 +2956,7 @@ func BenchmarkSqrt(b *testing.B) {
 func BenchmarkSqrtIndirect(b *testing.B) {
 	var x, y float32
 	x, y = 0.0, 10.0
-	f := Sqrt
+	f := MobileSqrt
 	for i := 0; i < b.N; i++ {
 		x += f(y)
 	}
@@ -2978,7 +2978,7 @@ func isPrime(i int) bool {
 	// the benefit of using a direct SQRT instruction on systems
 	// that have one, whereas the obvious loop seems not to
 	// demonstrate such a benefit.
-	for j := 2; float32(j) <= Sqrt(float32(i)); j++ {
+	for j := 2; float32(j) <= MobileSqrt(float32(i)); j++ {
 		if i%j == 0 {
 			return false
 		}

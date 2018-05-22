@@ -61,7 +61,7 @@ func Tanh(x float32) float32 {
 		}
 		return 1
 	case z >= 0.625:
-		s := Exp(z + z)
+		s := MobileExp(z + z)
 		z = 1 - 2/(s+1)
 		if x < 0 {
 			z = -z

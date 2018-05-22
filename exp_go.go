@@ -2,4 +2,4 @@
 
 package math32
 
-func Exp(x float32) float32
+func MobileExp(x float32) float32
